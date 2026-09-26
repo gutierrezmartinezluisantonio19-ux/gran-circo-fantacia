@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrador - Gran Circo Fantacia</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff7e6;
+            color: #222;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 20px;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .titulo h2 {
+            color: #8b0000;
+            margin-bottom: 10px;
+        }
+
+        .contador {
+            margin-top: 18px;
+            background-color: #8b0000;
+            color: white;
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .mensaje {
+            background-color: #fff3cd;
+            border: 1px solid #e0b000;
+            color: #664d03;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .seccion {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-bottom: 35px;
+        }
+
+        .seccion h2 {
+            color: #8b0000;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background-color: #8b0000;
+            color: white;
+            padding: 13px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #fff1cc;
+        }
+
+        .formulario {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .campo {
+            margin-bottom: 16px;
+        }
+
+        .campo label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo select,
+        .campo textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .campo textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a50000;
+        }
+
+        .acciones {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .editar,
+        .eliminar {
+            display: inline-block;
+            color: white;
+            padding: 8px 11px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .editar {
+            background-color: #1565c0;
+        }
+
+        .editar:hover {
+            background-color: #0d47a1;
+        }
+
+        .eliminar {
+            background-color: #c62828;
+        }
+
+        .eliminar:hover {
+            background-color: #a51f1f;
+        }
+
+        .form-edicion {
+            background-color: #fff7e6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .form-edicion input,
+        .form-edicion select,
+        .form-edicion textarea {
+            width: 100%;
+            padding: 9px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        .boton-editar {
+            background-color: #1565c0;
+        }
+
+        .boton-editar:hover {
+            background-color: #0d47a1;
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .volver,
+        .salir {
+            display: inline-block;
+            width: 210px;
+            padding: 13px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .volver {
+            background-color: #222;
+        }
+
+        .volver:hover {
+            background-color: #444;
+        }
+
+        .salir {
+            background-color: #8b0000;
+        }
+
+        .salir:hover {
+            background-color: #a50000;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+
+            .contenedor {
+                padding: 10px;
+            }
+
+            .seccion {
+                padding: 15px;
+            }
+
+            header {
+                padding: 22px 10px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header>
+
+    <h1>👑 GRAN CIRCO FANTACIA</h1>
+    <p>Panel del administrador</p>
+
+</header>
+
+
+<div class="contenedor">
+
+
+    <!-- MENSAJE -->
+
+    {% if mensaje %}
+
+    <div class="mensaje">
+        {{ mensaje }}
+    </div>
+
+    {% endif %}
+
+
+    <!-- ================================= -->
+    <!-- RESERVACIONES -->
+    <!-- ================================= -->
+
+    <div class="titulo">
+
+        <h2>📋 Reservaciones registradas</h2>
+
+        <p>
+            Aquí puedes consultar y administrar las reservaciones.
+        </p>
+
+        <div class="contador">
+            🎟️ Total de reservaciones: {{ reservaciones|length }}
+        </div>
+
+    </div>
+
+
+    <div class="seccion">
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <tr>
+
+                    <th>Cliente</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Espectáculo</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Boletos</th>
+                    <th>Acciones</th>
+
+                </tr>
+
+
+                {% for reserva in reservaciones %}
+
+                <tr>
+
+                    <td>
+                        {{ reserva[1] }} {{ reserva[2] }}
+                    </td>
+
+                    <td>
+                        {{ reserva[3] }}
+                    </td>
+
+                    <td>
+                        {{ reserva[4] }}
+                    </td>
+
+                    <td>
+                        {{ reserva[5] }}
+                    </td>
+
+                    <td>
+                        {{ reserva[6] }}
+                    </td>
+
+                    <td>
+                        {{ reserva[7] }}
+                    </td>
+
+                    <td>
+                        {{ reserva[8] }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="/eliminar-reservacion/{{ reserva[0] }}"
+                            class="eliminar"
+                            onclick="return confirm('¿Seguro que deseas eliminar esta reservación?');"
+                        >
+                            🗑️
+                        </a>
+
+                    </td>
+
+                </tr>
+
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="8">
+                        No hay reservaciones registradas.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- AGREGAR ESPECTÁCULO -->
+    <!-- ================================= -->
+
+    <div class="seccion">
+
+        <h2>🎭 Agregar nuevo espectáculo</h2>
+
+        <form
+            action="/agregar-espectaculo"
+            method="POST"
+            class="formulario"
+        >
+
+            <div class="campo">
+
+                <label>
+                    Nombre del espectáculo
+                </label>
+
+                <input
+                    type="text"
+                    name="nombre"
+                    placeholder="Ejemplo: El gran show de magia"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Descripción
+                </label>
+
+                <textarea
+                    name="descripcion"
+                    placeholder="Describe el espectáculo..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Duración
+                </label>
+
+                <input
+                    type="text"
+                    name="duracion"
+                    placeholder="Ejemplo: 60 minutos"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Precio del boleto
+                </label>
+
+                <input
+                    type="number"
+                    name="precio"
+                    min="0"
+                    step="0.01"
+                    placeholder="Ejemplo: 250"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit">
+                ➕ Agregar espectáculo
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- ESPECTÁCULOS EXISTENTES -->
+    <!-- ================================= -->
+
+    <div class="seccion">
+
+        <h2>🎭 Espectáculos registrados</h2>
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Duración</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+
+                </tr>
+
+
+                {% for espectaculo in espectaculos %}
+
+                <tr>
+
+                    <td>
+                        {{ espectaculo[0] }}
+                    </td>
+
+                    <td>
+                        <strong>{{ espectaculo[1] }}</strong>
+                    </td>
+
+                    <td>
+                        {{ espectaculo[2] }}
+                    </td>
+
+                    <td>
+                        {{ espectaculo[3] }}
+                    </td>
+
+                    <td>
+                        ${{ espectaculo[4] }}
+                    </td>
+
+                    <td>
+
+                        <details>
+
+                            <summary class="editar">
+                                ✏️ Editar
+                            </summary>
+
+                            <form
+                                action="/editar-espectaculo/{{ espectaculo[0] }}"
+                                method="POST"
+                                class="form-edicion"
+                            >
+
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    value="{{ espectaculo[1] }}"
+                                    required
+                                >
+
+                                <textarea
+                                    name="descripcion"
+                                    required
+                                >{{ espectaculo[2] }}</textarea>
+
+                                <input
+                                    type="text"
+                                    name="duracion"
+                                    value="{{ espectaculo[3] }}"
+                                    required
+                                >
+
+                                <input
+                                    type="number"
+                                    name="precio"
+                                    value="{{ espectaculo[4] }}"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="boton-editar"
+                                >
+                                    💾 Guardar cambios
+                                </button>
+
+                            </form>
+
+                        </details>
+
+
+                        <br>
+
+
+                        <a
+                            href="/eliminar-espectaculo/{{ espectaculo[0] }}"
+                            class="eliminar"
+                            onclick="return confirm('¿Seguro que deseas eliminar este espectáculo?');"
+                        >
+                            🗑️ Eliminar
+                        </a>
+
+                    </td>
+
+                </tr>
+
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="6">
+                        No hay espectáculos registrados.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- AGREGAR FUNCIÓN -->
+    <!-- ================================= -->
+
+    <div class="seccion">
+
+        <h2>🎟️ Agregar nueva función</h2>
+
+        <form
+            action="/agregar-funcion"
+            method="POST"
+            class="formulario"
+        >
+
+            <div class="campo">
+
+                <label>
+                    🎭 Selecciona el espectáculo
+                </label>
+
+                <select
+                    name="id_espectaculo"
+                    required
+                >
+
+                    <option value="">
+                        Selecciona un espectáculo
+                    </option>
+
+                    {% for espectaculo in espectaculos %}
+
+                    <option value="{{ espectaculo[0] }}">
+                        {{ espectaculo[1] }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    📅 Fecha
+                </label>
+
+                <input
+                    type="date"
+                    name="fecha"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    🕐 Hora
+                </label>
+
+                <input
+                    type="time"
+                    name="hora"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit">
+                ➕ Agregar función
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- FUNCIONES EXISTENTES -->
+    <!-- ================================= -->
+
+    <div class="seccion">
+
+        <h2>📅 Funciones programadas</h2>
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Espectáculo</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Acciones</th>
+
+                </tr>
+
+
+                {% for funcion in funciones %}
+
+                <tr>
+
+                    <td>
+                        {{ funcion[0] }}
+                    </td>
+
+                    <td>
+                        <strong>{{ funcion[1] }}</strong>
+                    </td>
+
+                    <td>
+                        {{ funcion[2] }}
+                    </td>
+
+                    <td>
+                        {{ funcion[3] }}
+                    </td>
+
+                    <td>
+
+                        <details>
+
+                            <summary class="editar">
+                                ✏️ Editar
+                            </summary>
+
+                            <form
+                                action="/editar-funcion/{{ funcion[0] }}"
+                                method="POST"
+                                class="form-edicion"
+                            >
+
+                                <select
+                                    name="id_espectaculo"
+                                    required
+                                >
+
+                                    {% for espectaculo in espectaculos %}
+
+                                    <option
+                                        value="{{ espectaculo[0] }}"
+                                        {% if espectaculo[1] == funcion[1] %}
+                                        selected
+                                        {% endif %}
+                                    >
+                                        {{ espectaculo[1] }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+
+                                <input
+                                    type="date"
+                                    name="fecha"
+                                    value="{{ funcion[2] }}"
+                                    required
+                                >
+
+
+                                <input
+                                    type="time"
+                                    name="hora"
+                                    value="{{ funcion[3] }}"
+                                    required
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="boton-editar"
+                                >
+                                    💾 Guardar cambios
+                                </button>
+
+                            </form>
+
+                        </details>
+
+
+                        <br>
+
+
+                        <a
+                            href="/eliminar-funcion/{{ funcion[0] }}"
+                            class="eliminar"
+                            onclick="return confirm('¿Seguro que deseas eliminar esta función?');"
+                        >
+                            🗑️ Eliminar
+                        </a>
+
+                    </td>
+
+                </tr>
+
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="5">
+                        No hay funciones programadas.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- BOTONES -->
+    <!-- ================================= -->
+
+    <div class="botones">
+
+        <a
+            href="/"
+            class="volver"
+        >
+            🏠 Regresar al inicio
+        </a>
+
+        <a
+            href="/logout"
+            class="salir"
+        >
+            🚪 Cerrar sesión
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<footer>
+
+    <p>© 2026 GRAN CIRCO FANTACIA</p>
+    <p>Panel administrativo</p>
+
+</footer>
+
+
+</body>
+
+</html>

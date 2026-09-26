@@ -1,0 +1,210 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Espectáculos - Gran Circo Fantacia</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff7e6;
+            color: #222;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        nav {
+            background-color: #222;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .titulo h2 {
+            color: #8b0000;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .tarjetas {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tarjeta {
+            background-color: white;
+            width: 300px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .tarjeta h3 {
+            color: #8b0000;
+            font-size: 23px;
+            margin-bottom: 15px;
+        }
+
+        .tarjeta p {
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .precio {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8b0000;
+            margin-top: 15px;
+        }
+
+        .boton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background-color: #8b0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .boton:hover {
+            background-color: #600000;
+        }
+
+        .regresar {
+            display: block;
+            width: fit-content;
+            margin: 40px auto 10px;
+            padding: 14px 25px;
+            background-color: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .regresar:hover {
+            background-color: #444;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎪 GRAN CIRCO FANTACIA 🎪</h1>
+        <p>¡Vive la magia del circo!</p>
+    </header>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/espectaculos">Espectáculos</a>
+        <a href="/animales">Animales</a>
+        <a href="/payasos">Payasos</a>
+        <a href="/reservaciones">Reservaciones</a>
+        <a href="/contacto">Contacto</a>
+    </nav>
+
+    <div class="contenedor">
+
+        <div class="titulo">
+            <h2>🎭 Nuestros espectáculos</h2>
+            <p>Conoce las presentaciones disponibles en GRAN CIRCO FANTACIA.</p>
+        </div>
+
+        <div class="tarjetas">
+
+            {% for espectaculo in espectaculos %}
+
+            <div class="tarjeta">
+
+                <h3>🎪 {{ espectaculo[1] }}</h3>
+
+                <p>
+                    {{ espectaculo[2] }}
+                </p>
+
+                <p>
+                    ⏱️ Duración: {{ espectaculo[3] }} minutos
+                </p>
+
+                <p class="precio">
+                    🎟️ ${{ espectaculo[4] }}
+                </p>
+
+                <a href="/reservaciones" class="boton">
+                    Reservar boletos
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <a href="/" class="regresar">
+            🏠 Regresar al inicio
+        </a>
+
+    </div>
+
+    <footer>
+        <p>© 2026 GRAN CIRCO FANTACIA</p>
+        <p>Todos los derechos reservados</p>
+    </footer>
+
+</body>
+</html>
+```

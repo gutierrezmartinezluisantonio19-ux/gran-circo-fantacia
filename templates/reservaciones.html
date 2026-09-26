@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reservaciones - Gran Circo Fantacia</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff7e6;
+            color: #222;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        nav {
+            background-color: #222;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        .contenedor {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .contenedor h2 {
+            text-align: center;
+            color: #8b0000;
+            margin-bottom: 10px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+
+        .informacion {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff3cd;
+            border: 1px solid #e0b000;
+            border-radius: 10px;
+        }
+
+        .informacion h3 {
+            color: #8b0000;
+            margin-bottom: 12px;
+        }
+
+        .dato {
+            margin: 7px 0;
+        }
+
+        .total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #8b0000;
+            font-size: 22px;
+            font-weight: bold;
+            color: #8b0000;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #600000;
+        }
+
+        .volver {
+            display: block;
+            width: fit-content;
+            margin: 25px auto 0;
+            padding: 12px 22px;
+            background-color: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .volver:hover {
+            background-color: #444;
+        }
+
+        .sin-funciones {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border-radius: 10px;
+            color: #842029;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 25px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+            .contenedor {
+                margin: 20px 10px;
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header>
+
+    <h1>🎪 GRAN CIRCO FANTACIA 🎪</h1>
+
+    <p>Reserva tus boletos</p>
+
+</header>
+
+
+<nav>
+
+    <a href="/">Inicio</a>
+    <a href="/espectaculos">Espectáculos</a>
+    <a href="/animales">Animales</a>
+    <a href="/payasos">Payasos</a>
+    <a href="/reservaciones">Reservaciones</a>
+    <a href="/contacto">Contacto</a>
+
+</nav>
+
+
+<div class="contenedor">
+
+    <h2>🎟️ Reserva tus boletos</h2>
+
+    <p class="subtitulo">
+        Completa tus datos y selecciona la función que deseas disfrutar.
+    </p>
+
+
+    {% if funciones %}
+
+    <form method="POST">
+
+
+        <label>
+            Nombre:
+        </label>
+
+        <input
+            type="text"
+            name="nombre"
+            maxlength="50"
+            required
+        >
+
+
+        <label>
+            Apellido:
+        </label>
+
+        <input
+            type="text"
+            name="apellido"
+            maxlength="50"
+            required
+        >
+
+
+        <label>
+            Teléfono:
+        </label>
+
+        <input
+            type="tel"
+            name="telefono"
+            maxlength="20"
+            required
+        >
+
+
+        <label>
+            Correo electrónico:
+        </label>
+
+        <input
+            type="email"
+            name="correo"
+            maxlength="100"
+            required
+        >
+
+
+        <label>
+            🎭 Selecciona una función:
+        </label>
+
+        <select
+            name="id_funcion"
+            id="id_funcion"
+            required
+        >
+
+            <option value="">
+                -- Selecciona una función --
+            </option>
+
+
+            {% for funcion in funciones %}
+
+            <option
+                value="{{ funcion[0] }}"
+                data-precio="{{ funcion[4] }}"
+            >
+
+                {{ funcion[1] }} -
+                {{ funcion[2] }} -
+                {{ funcion[3] }} -
+                ${{ funcion[4] }}
+
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <label>
+            🎟️ Cantidad de boletos:
+        </label>
+
+        <input
+            type="number"
+            name="cantidad_boletos"
+            id="cantidad_boletos"
+            min="1"
+            max="10"
+            value="1"
+            required
+        >
+
+
+        <div
+            class="informacion"
+            id="informacion"
+        >
+
+            <h3>
+                🎪 Resumen de tu reservación
+            </h3>
+
+            <p class="dato">
+                <strong>Espectáculo:</strong>
+                <span id="nombre_espectaculo">-</span>
+            </p>
+
+            <p class="dato">
+                <strong>Fecha:</strong>
+                <span id="fecha_funcion">-</span>
+            </p>
+
+            <p class="dato">
+                <strong>Hora:</strong>
+                <span id="hora_funcion">-</span>
+            </p>
+
+            <p class="dato">
+                <strong>Precio por boleto:</strong>
+                $<span id="precio_boleto">0.00</span>
+            </p>
+
+            <p class="dato">
+                <strong>Cantidad:</strong>
+                <span id="cantidad_mostrada">1</span>
+                boleto(s)
+            </p>
+
+            <div class="total">
+
+                💰 Total a pagar:
+                $<span id="total">0.00</span>
+
+            </div>
+
+        </div>
+
+
+        <button type="submit">
+            🎟️ Confirmar reservación
+        </button>
+
+
+    </form>
+
+
+    {% else %}
+
+    <div class="sin-funciones">
+
+        <h3>⚠️ No hay funciones disponibles</h3>
+
+        <p>
+            Actualmente no hay funciones programadas.
+            Por favor, vuelve más tarde.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <a
+        href="/"
+        class="volver"
+    >
+        🏠 Regresar al inicio
+    </a>
+
+</div>
+
+
+<footer>
+
+    <p>© 2026 GRAN CIRCO FANTACIA</p>
+
+    <p>Todos los derechos reservados</p>
+
+</footer>
+
+
+<script>
+
+    const funcion = document.getElementById("id_funcion");
+    const cantidad = document.getElementById("cantidad_boletos");
+
+    const informacion = document.getElementById("informacion");
+
+    const nombreEspectaculo =
+        document.getElementById("nombre_espectaculo");
+
+    const fechaFuncion =
+        document.getElementById("fecha_funcion");
+
+    const horaFuncion =
+        document.getElementById("hora_funcion");
+
+    const precioBoleto =
+        document.getElementById("precio_boleto");
+
+    const cantidadMostrada =
+        document.getElementById("cantidad_mostrada");
+
+    const total =
+        document.getElementById("total");
+
+
+    function actualizarResumen() {
+
+        if (!funcion || !cantidad) {
+            return;
+        }
+
+
+        const opcion =
+            funcion.options[funcion.selectedIndex];
+
+
+        if (!funcion.value) {
+
+            informacion.style.display = "none";
+
+            return;
+
+        }
+
+
+        const precio =
+            parseFloat(opcion.dataset.precio) || 0;
+
+        const boletos =
+            parseInt(cantidad.value) || 1;
+
+
+        const datos =
+            opcion.textContent.split("-");
+
+
+        nombreEspectaculo.textContent =
+            datos[0].trim();
+
+        fechaFuncion.textContent =
+            datos[1] ? datos[1].trim() : "-";
+
+        horaFuncion.textContent =
+            datos[2] ? datos[2].trim() : "-";
+
+        precioBoleto.textContent =
+            precio.toFixed(2);
+
+        cantidadMostrada.textContent =
+            boletos;
+
+        total.textContent =
+            (precio * boletos).toFixed(2);
+
+
+        informacion.style.display = "block";
+
+    }
+
+
+    if (funcion) {
+
+        funcion.addEventListener(
+            "change",
+            actualizarResumen
+        );
+
+    }
+
+
+    if (cantidad) {
+
+        cantidad.addEventListener(
+            "input",
+            actualizarResumen
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,272 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gran Circo Fantacia</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff7e6;
+            color: #222;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        nav {
+            background-color: #222;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        .principal {
+            text-align: center;
+            padding: 70px 20px;
+            background-color: #ffd700;
+        }
+
+        .principal h2 {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .principal p {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .boton {
+            display: inline-block;
+            background-color: #8b0000;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 8px;
+        }
+
+        .boton:hover {
+            background-color: #600000;
+        }
+
+        .seccion {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .seccion h2 {
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
+
+        .tarjetas {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tarjeta {
+            background-color: white;
+            width: 280px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .tarjeta h3 {
+            margin-bottom: 15px;
+            color: #8b0000;
+        }
+
+        .tarjeta p {
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .tarjeta a {
+            display: inline-block;
+            background-color: #8b0000;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .tarjeta a:hover {
+            background-color: #600000;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎪 GRAN CIRCO FANTACIA 🎪</h1>
+        <p>Donde la diversión se convierte en magia</p>
+    </header>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/espectaculos">Espectáculos</a>
+        <a href="/animales">Animales</a>
+        <a href="/payasos">Payasos</a>
+        <a href="/reservaciones">Reservaciones</a>
+        <a href="/contacto">Contacto</a>
+    </nav>
+
+    <section class="principal">
+
+        <h2>¡Bienvenidos!</h2>
+
+        <p>
+            Vive una experiencia inolvidable en GRAN CIRCO FANTACIA.
+        </p>
+
+        <a href="/reservaciones" class="boton">
+            🎟️ Reservar boletos
+        </a>
+
+        <a href="/espectaculos" class="boton">
+            🎭 Ver espectáculos
+        </a>
+
+    </section>
+
+    <section class="seccion">
+
+        <h2>Descubre nuestro circo</h2>
+
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+                <h3>🎭 Espectáculos</h3>
+
+                <p>
+                    Disfruta de increíbles presentaciones llenas de
+                    emoción, magia y diversión para toda la familia.
+                </p>
+
+                <a href="/espectaculos">
+                    Ver espectáculos
+                </a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>🦁 Animales</h3>
+
+                <p>
+                    Conoce a nuestros animales y descubre más sobre
+                    las increíbles especies que forman parte del circo.
+                </p>
+
+                <a href="/animales">
+                    Ver animales
+                </a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>🤡 Payasos</h3>
+
+                <p>
+                    Ríe con nuestros divertidos payasos, sus ocurrencias
+                    y sus mejores chistes.
+                </p>
+
+                <a href="/payasos">
+                    Conocer payasos
+                </a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>📞 Contacto</h3>
+
+                <p>
+                    ¿Tienes alguna pregunta? Consulta nuestros datos
+                    de contacto y horarios de atención.
+                </p>
+
+                <a href="/contacto">
+                    Contactarnos
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="seccion">
+
+        <h2>🎟️ ¿Listo para vivir la experiencia?</h2>
+
+        <p>
+            Reserva tus boletos y disfruta de GRAN CIRCO FANTACIA.
+        </p>
+
+        <a href="/reservaciones" class="boton">
+            🎟️ Hacer una reservación
+        </a>
+
+    </section>
+
+    <footer>
+
+        <p>© 2026 GRAN CIRCO FANTACIA</p>
+
+        <p>
+            Todos los derechos reservados
+        </p>
+
+        <p>
+            <a href="/contacto">Contacto</a>
+        </p>
+
+    </footer>
+
+</body>
+</html>
+```
