@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
-from datetime import date
+from datetime import date, datetime
 import os
 
 app = Flask(__name__)
@@ -130,6 +130,7 @@ def inicializar_bd():
         )
     """)
 
+
     cursor.execute("""
         INSERT OR IGNORE INTO espectaculos
         (
@@ -148,6 +149,7 @@ def inicializar_bd():
             100
         )
     """)
+
 
     cursor.execute("""
         INSERT OR IGNORE INTO espectaculos
@@ -190,6 +192,7 @@ def inicializar_bd():
         )
     """)
 
+
     cursor.execute("""
         INSERT OR IGNORE INTO funciones
         (
@@ -207,6 +210,7 @@ def inicializar_bd():
         )
     """)
 
+
     cursor.execute("""
         INSERT OR IGNORE INTO funciones
         (
@@ -223,6 +227,7 @@ def inicializar_bd():
             '17:00'
         )
     """)
+
 
     cursor.execute("""
         INSERT OR IGNORE INTO funciones
@@ -247,8 +252,7 @@ def inicializar_bd():
     conexion.close()
 
 
-# Crear la base de datos automáticamente
-# cuando inicia la aplicación
+# Crear base de datos automáticamente
 inicializar_bd()
 
 
@@ -344,13 +348,19 @@ def reservaciones():
         apellido = request.form["apellido"].strip()
         telefono = request.form["telefono"].strip()
         correo = request.form["correo"].strip().lower()
-        id_funcion = request.form["id_funcion"]
+
+        fecha = request.form["fecha"]
+        hora = request.form["hora"]
+        id_espectaculo = request.form["id_espectaculo"]
+
 
         try:
 
             cantidad_boletos = int(
                 request.form["cantidad_boletos"]
             )
+
+            id_espectaculo = int(id_espectaculo)
 
         except ValueError:
 
@@ -360,6 +370,10 @@ def reservaciones():
                 url_for("reservaciones")
             )
 
+
+        # ==========================
+        # VALIDAR BOLETOS
+        # ==========================
 
         if cantidad_boletos < 1 or cantidad_boletos > 10:
 
@@ -371,21 +385,29 @@ def reservaciones():
 
 
         # ==========================
-        # VERIFICAR FUNCIÓN
+        # VALIDAR FECHA
         # ==========================
 
-        cursor.execute("""
-            SELECT id_funcion
-            FROM funciones
-            WHERE id_funcion = ?
-        """, (
-            id_funcion,
-        ))
+        try:
 
-        funcion = cursor.fetchone()
+            fecha_objeto = datetime.strptime(
+                fecha,
+                "%Y-%m-%d"
+            ).date()
+
+        except ValueError:
+
+            conexion.close()
+
+            return redirect(
+                url_for("reservaciones")
+            )
 
 
-        if funcion is None:
+        # 5 = sábado
+        # 6 = domingo
+
+        if fecha_objeto.weekday() not in [5, 6]:
 
             conexion.close()
 
@@ -395,11 +417,106 @@ def reservaciones():
 
 
         # ==========================
+        # VALIDAR ESPECTÁCULO
+        # ==========================
+
+        cursor.execute("""
+            SELECT
+                id_espectaculo
+            FROM espectaculos
+            WHERE id_espectaculo = ?
+        """, (
+            id_espectaculo,
+        ))
+
+        espectaculo = cursor.fetchone()
+
+
+        if espectaculo is None:
+
+            conexion.close()
+
+            return redirect(
+                url_for("reservaciones")
+            )
+
+
+        # ==========================
+        # VALIDAR HORA
+        # ==========================
+
+        try:
+
+            datetime.strptime(
+                hora,
+                "%H:%M"
+            )
+
+        except ValueError:
+
+            conexion.close()
+
+            return redirect(
+                url_for("reservaciones")
+            )
+
+
+        # ==========================
+        # BUSCAR FUNCIÓN
+        # ==========================
+
+        cursor.execute("""
+            SELECT
+                id_funcion
+            FROM funciones
+            WHERE
+                id_espectaculo = ?
+                AND fecha = ?
+                AND hora = ?
+        """, (
+            id_espectaculo,
+            fecha,
+            hora
+        ))
+
+        funcion = cursor.fetchone()
+
+
+        # ==========================
+        # CREAR FUNCIÓN SI NO EXISTE
+        # ==========================
+
+        if funcion is None:
+
+            cursor.execute("""
+                INSERT INTO funciones
+                (
+                    id_espectaculo,
+                    fecha,
+                    hora
+                )
+                VALUES (?, ?, ?)
+            """, (
+                id_espectaculo,
+                fecha,
+                hora
+            ))
+
+            id_funcion = cursor.lastrowid
+
+
+        else:
+
+            id_funcion = funcion[0]
+
+
+        # ==========================
         # BUSCAR CLIENTE
         # ==========================
 
         cursor.execute("""
-            SELECT id_cliente
+            SELECT
+                id_cliente
             FROM clientes
             WHERE correo = ?
         """, (
@@ -492,58 +609,30 @@ def reservaciones():
 
 
     # ==========================
-    # MOSTRAR FUNCIONES
+    # MOSTRAR ESPECTÁCULOS
     # ==========================
 
     cursor.execute("""
         SELECT
-            funciones.id_funcion,
-            espectaculos.nombre,
-            funciones.fecha,
-            funciones.hora,
-            CAST(
-                REPLACE(
-                    REPLACE(
-                        REPLACE(
-                            TRIM(
-                                CAST(
-                                    COALESCE(
-                                        espectaculos.precio,
-                                        0
-                                    ) AS TEXT
-                                )
-                            ),
-                            '$',
-                            ''
-                        ),
-                        ',',
-                        ''
-                    ),
-                    'MXN',
-                    ''
-                ) AS REAL
-            ) AS precio
+            id_espectaculo,
+            nombre,
+            descripcion,
+            duracion,
+            precio
 
-        FROM funciones
+        FROM espectaculos
 
-        INNER JOIN espectaculos
-
-        ON funciones.id_espectaculo =
-           espectaculos.id_espectaculo
-
-        ORDER BY
-            funciones.fecha,
-            funciones.hora
+        ORDER BY id_espectaculo
     """)
 
-    funciones = cursor.fetchall()
+    espectaculos = cursor.fetchall()
 
     conexion.close()
 
 
     return render_template(
         "reservaciones.html",
-        funciones=funciones
+        espectaculos=espectaculos
     )
 
 
@@ -621,22 +710,15 @@ def admin():
         FROM reservaciones
 
         INNER JOIN clientes
-
-        ON reservaciones.id_cliente =
-           clientes.id_cliente
+        ON reservaciones.id_cliente = clientes.id_cliente
 
         INNER JOIN funciones
-
-        ON reservaciones.id_funcion =
-           funciones.id_funcion
+        ON reservaciones.id_funcion = funciones.id_funcion
 
         INNER JOIN espectaculos
+        ON funciones.id_espectaculo = espectaculos.id_espectaculo
 
-        ON funciones.id_espectaculo =
-           espectaculos.id_espectaculo
-
-        ORDER BY
-            reservaciones.id_reservacion DESC
+        ORDER BY reservaciones.id_reservacion DESC
     """)
 
     reservaciones = cursor.fetchall()
@@ -676,9 +758,7 @@ def admin():
         FROM funciones
 
         INNER JOIN espectaculos
-
-        ON funciones.id_espectaculo =
-           espectaculos.id_espectaculo
+        ON funciones.id_espectaculo = espectaculos.id_espectaculo
 
         ORDER BY
             funciones.fecha,

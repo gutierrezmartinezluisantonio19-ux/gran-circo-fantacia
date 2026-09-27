@@ -1,523 +1,553 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Reservaciones - Gran Circo Fantacia</title>
 
     <style>
-
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fff7e6;
-            color: #222;
-        }
-
-        header {
-            background-color: #8b0000;
+            background: #111;
             color: white;
-            padding: 25px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 35px;
-            margin-bottom: 10px;
-        }
-
-        nav {
-            background-color: #222;
-            padding: 15px;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: #ffd700;
         }
 
         .contenedor {
-            max-width: 700px;
+            width: 90%;
+            max-width: 900px;
             margin: 40px auto;
+            background: #1d1d1d;
             padding: 30px;
-            background-color: white;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.15);
         }
 
-        .contenedor h2 {
+        h1 {
             text-align: center;
-            color: #8b0000;
+            color: #ffd700;
             margin-bottom: 10px;
         }
 
         .subtitulo {
             text-align: center;
-            margin-bottom: 25px;
-            color: #555;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+
+        .grupo {
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 7px;
             font-weight: bold;
+            color: #ffd700;
         }
 
         input,
         select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 7px;
+            border: none;
+            border-radius: 8px;
             font-size: 16px;
+            background: white;
+            color: #111;
         }
 
         input:focus,
         select:focus {
-            outline: none;
-            border-color: #8b0000;
+            outline: 2px solid #ffd700;
         }
 
-        .informacion {
-            display: none;
-            margin-top: 20px;
+        .fila {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .ayuda {
+            display: block;
+            margin-top: 6px;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .resumen {
+            margin-top: 25px;
             padding: 20px;
-            background-color: #fff3cd;
-            border: 1px solid #e0b000;
+            background: #292929;
             border-radius: 10px;
+            border: 1px solid #444;
         }
 
-        .informacion h3 {
-            color: #8b0000;
-            margin-bottom: 12px;
-        }
-
-        .dato {
-            margin: 7px 0;
+        .resumen h2 {
+            margin-top: 0;
+            color: #ffd700;
         }
 
         .total {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #8b0000;
             font-size: 22px;
             font-weight: bold;
-            color: #8b0000;
+            color: #00ff88;
+            margin-top: 15px;
         }
 
-        button {
+        .boton {
             width: 100%;
             margin-top: 25px;
             padding: 15px;
-            background-color: #8b0000;
-            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            background: #ffd700;
+            color: #111;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        button:hover {
-            background-color: #600000;
+        .boton:hover {
+            background: #ffea70;
         }
 
         .volver {
             display: block;
-            width: fit-content;
-            margin: 25px auto 0;
-            padding: 12px 22px;
-            background-color: #222;
-            color: white;
+            text-align: center;
+            margin-top: 20px;
+            color: #ffd700;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
         }
 
-        .volver:hover {
-            background-color: #444;
-        }
-
-        .sin-funciones {
-            text-align: center;
-            padding: 20px;
-            background-color: #f8d7da;
-            border-radius: 10px;
-            color: #842029;
-        }
-
-        footer {
-            background-color: #222;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+        .mensaje {
+            margin-top: 8px;
+            color: #ff6666;
+            font-size: 14px;
+            display: none;
         }
 
         @media (max-width: 600px) {
-
-            header h1 {
-                font-size: 25px;
-            }
-
-            nav a {
-                display: inline-block;
-                margin: 7px;
-            }
-
             .contenedor {
-                margin: 20px 10px;
+                width: 94%;
                 padding: 20px;
+                margin: 20px auto;
             }
 
+            .fila {
+                grid-template-columns: 1fr;
+            }
         }
-
     </style>
-
 </head>
 
 <body>
 
-
-<header>
+<div class="contenedor">
 
     <h1>🎪 GRAN CIRCO FANTACIA 🎪</h1>
 
-    <p>Reserva tus boletos</p>
-
-</header>
-
-
-<nav>
-
-    <a href="/">Inicio</a>
-    <a href="/espectaculos">Espectáculos</a>
-    <a href="/animales">Animales</a>
-    <a href="/payasos">Payasos</a>
-    <a href="/reservaciones">Reservaciones</a>
-    <a href="/contacto">Contacto</a>
-
-</nav>
-
-
-<div class="contenedor">
-
-    <h2>🎟️ Reserva tus boletos</h2>
-
     <p class="subtitulo">
-        Completa tus datos y selecciona la función que deseas disfrutar.
+        Reserva tus boletos para disfrutar del espectáculo.
     </p>
 
+    <form method="POST" action="{{ url_for('reservaciones') }}" id="formReserva">
 
-    {% if funciones %}
+        <div class="fila">
 
-    <form method="POST">
+            <div class="grupo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
 
-
-        <label>
-            Nombre:
-        </label>
-
-        <input
-            type="text"
-            name="nombre"
-            maxlength="50"
-            required
-        >
-
-
-        <label>
-            Apellido:
-        </label>
-
-        <input
-            type="text"
-            name="apellido"
-            maxlength="50"
-            required
-        >
-
-
-        <label>
-            Teléfono:
-        </label>
-
-        <input
-            type="tel"
-            name="telefono"
-            maxlength="20"
-            required
-        >
-
-
-        <label>
-            Correo electrónico:
-        </label>
-
-        <input
-            type="email"
-            name="correo"
-            maxlength="100"
-            required
-        >
-
-
-        <label>
-            🎭 Selecciona una función:
-        </label>
-
-        <select
-            name="id_funcion"
-            id="id_funcion"
-            required
-        >
-
-            <option value="">
-                -- Selecciona una función --
-            </option>
-
-
-            {% for funcion in funciones %}
-
-            <option
-                value="{{ funcion[0] }}"
-                data-precio="{{ funcion[4] }}"
-            >
-
-                {{ funcion[1] }} -
-                {{ funcion[2] }} -
-                {{ funcion[3] }} -
-                ${{ funcion[4] }}
-
-            </option>
-
-            {% endfor %}
-
-        </select>
-
-
-        <label>
-            🎟️ Cantidad de boletos:
-        </label>
-
-        <input
-            type="number"
-            name="cantidad_boletos"
-            id="cantidad_boletos"
-            min="1"
-            max="10"
-            value="1"
-            required
-        >
-
-
-        <div
-            class="informacion"
-            id="informacion"
-        >
-
-            <h3>
-                🎪 Resumen de tu reservación
-            </h3>
-
-            <p class="dato">
-                <strong>Espectáculo:</strong>
-                <span id="nombre_espectaculo">-</span>
-            </p>
-
-            <p class="dato">
-                <strong>Fecha:</strong>
-                <span id="fecha_funcion">-</span>
-            </p>
-
-            <p class="dato">
-                <strong>Hora:</strong>
-                <span id="hora_funcion">-</span>
-            </p>
-
-            <p class="dato">
-                <strong>Precio por boleto:</strong>
-                $<span id="precio_boleto">0.00</span>
-            </p>
-
-            <p class="dato">
-                <strong>Cantidad:</strong>
-                <span id="cantidad_mostrada">1</span>
-                boleto(s)
-            </p>
-
-            <div class="total">
-
-                💰 Total a pagar:
-                $<span id="total">0.00</span>
-
+            <div class="grupo">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
             </div>
 
         </div>
 
+        <div class="fila">
 
-        <button type="submit">
-            🎟️ Confirmar reservación
+            <div class="grupo">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" required>
+            </div>
+
+            <div class="grupo">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
+
+        </div>
+
+        <div class="grupo">
+            <label for="fecha">Fecha de la función</label>
+
+            <input
+                type="date"
+                id="fecha"
+                name="fecha"
+                required
+            >
+
+            <span class="ayuda">
+                Selecciona una fecha. Las funciones están disponibles los sábados y domingos.
+            </span>
+
+            <div id="mensajeFecha" class="mensaje"></div>
+        </div>
+
+        <div class="grupo">
+            <label for="id_espectaculo">Espectáculo</label>
+
+            <select id="id_espectaculo" name="id_espectaculo" required>
+
+                <option value="">
+                    Selecciona un espectáculo
+                </option>
+
+                {% for espectaculo in espectaculos %}
+
+                <option
+                    value="{{ espectaculo[0] }}"
+                    data-precio="{{ espectaculo[4] }}"
+                >
+                    {{ espectaculo[1] }} - ${{ "%.2f"|format(espectaculo[4]) }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="grupo">
+            <label for="hora">Hora</label>
+
+            <select id="hora" name="hora" required>
+
+                <option value="">
+                    Selecciona una hora
+                </option>
+
+                <option value="17:00">5:00 PM</option>
+                <option value="18:00">6:00 PM</option>
+                <option value="19:00">7:00 PM</option>
+                <option value="20:00">8:00 PM</option>
+                <option value="21:00">9:00 PM</option>
+
+            </select>
+        </div>
+
+        <div class="grupo">
+            <label for="cantidad_boletos">Cantidad de boletos</label>
+
+            <input
+                type="number"
+                id="cantidad_boletos"
+                name="cantidad_boletos"
+                min="1"
+                max="10"
+                value="1"
+                required
+            >
+        </div>
+
+        <div class="resumen">
+
+            <h2>Resumen de la reservación</h2>
+
+            <p>
+                <strong>Fecha:</strong>
+                <span id="resumenFecha">No seleccionada</span>
+            </p>
+
+            <p>
+                <strong>Espectáculo:</strong>
+                <span id="resumenEspectaculo">No seleccionado</span>
+            </p>
+
+            <p>
+                <strong>Hora:</strong>
+                <span id="resumenHora">No seleccionada</span>
+            </p>
+
+            <p>
+                <strong>Boletos:</strong>
+                <span id="resumenBoletos">1</span>
+            </p>
+
+            <p class="total">
+                Total:
+                $<span id="total">0.00</span>
+            </p>
+
+        </div>
+
+        <button type="submit" class="boton">
+            🎟️ CONFIRMAR RESERVACIÓN
         </button>
-
 
     </form>
 
-
-    {% else %}
-
-    <div class="sin-funciones">
-
-        <h3>⚠️ No hay funciones disponibles</h3>
-
-        <p>
-            Actualmente no hay funciones programadas.
-            Por favor, vuelve más tarde.
-        </p>
-
-    </div>
-
-    {% endif %}
-
-
-    <a
-        href="/"
-        class="volver"
-    >
-        🏠 Regresar al inicio
+    <a href="/" class="volver">
+        ← Volver al inicio
     </a>
 
 </div>
 
-
-<footer>
-
-    <p>© 2026 GRAN CIRCO FANTACIA</p>
-
-    <p>Todos los derechos reservados</p>
-
-</footer>
-
-
 <script>
 
-    const funcion = document.getElementById("id_funcion");
-    const cantidad = document.getElementById("cantidad_boletos");
+    const fecha = document.getElementById("fecha");
+    const espectaculo = document.getElementById("id_espectaculo");
+    const hora = document.getElementById("hora");
+    const boletos = document.getElementById("cantidad_boletos");
+    const formulario = document.getElementById("formReserva");
 
-    const informacion = document.getElementById("informacion");
+    const mensajeFecha = document.getElementById("mensajeFecha");
 
-    const nombreEspectaculo =
-        document.getElementById("nombre_espectaculo");
+    const resumenFecha = document.getElementById("resumenFecha");
+    const resumenEspectaculo = document.getElementById("resumenEspectaculo");
+    const resumenHora = document.getElementById("resumenHora");
+    const resumenBoletos = document.getElementById("resumenBoletos");
+    const total = document.getElementById("total");
 
-    const fechaFuncion =
-        document.getElementById("fecha_funcion");
 
-    const horaFuncion =
-        document.getElementById("hora_funcion");
+    // No permitir fechas anteriores a hoy
+    const hoy = new Date();
 
-    const precioBoleto =
-        document.getElementById("precio_boleto");
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoy.getDate()).padStart(2, "0");
 
-    const cantidadMostrada =
-        document.getElementById("cantidad_mostrada");
-
-    const total =
-        document.getElementById("total");
+    fecha.min = `${año}-${mes}-${dia}`;
 
 
     function actualizarResumen() {
 
-        if (!funcion || !cantidad) {
-            return;
+        // FECHA
+        if (fecha.value) {
+
+            const partes = fecha.value.split("-");
+
+            const añoFecha = partes[0];
+            const mesFecha = partes[1];
+            const diaFecha = partes[2];
+
+            resumenFecha.textContent =
+                `${diaFecha}/${mesFecha}/${añoFecha}`;
+
+        } else {
+
+            resumenFecha.textContent = "No seleccionada";
+
         }
 
 
-        const opcion =
-            funcion.options[funcion.selectedIndex];
+        // ESPECTÁCULO
+        if (espectaculo.value) {
 
+            const opcion =
+                espectaculo.options[espectaculo.selectedIndex];
 
-        if (!funcion.value) {
+            resumenEspectaculo.textContent =
+                opcion.textContent.trim();
 
-            informacion.style.display = "none";
+        } else {
 
-            return;
+            resumenEspectaculo.textContent =
+                "No seleccionado";
 
         }
 
 
-        const precio =
-            parseFloat(opcion.dataset.precio) || 0;
+        // HORA
+        if (hora.value) {
 
-        const boletos =
-            parseInt(cantidad.value) || 1;
+            const partesHora = hora.value.split(":");
+
+            let h = parseInt(partesHora[0]);
+            const minutos = partesHora[1];
+
+            let periodo = "AM";
+
+            if (h >= 12) {
+                periodo = "PM";
+            }
+
+            if (h > 12) {
+                h -= 12;
+            }
+
+            if (h === 0) {
+                h = 12;
+            }
+
+            resumenHora.textContent =
+                `${h}:${minutos} ${periodo}`;
+
+        } else {
+
+            resumenHora.textContent =
+                "No seleccionada";
+
+        }
 
 
-        const datos =
-            opcion.textContent.split("-");
+        // BOLETOS
+        let cantidad = parseInt(boletos.value);
+
+        if (isNaN(cantidad) || cantidad < 1) {
+            cantidad = 1;
+        }
+
+        if (cantidad > 10) {
+            cantidad = 10;
+            boletos.value = 10;
+        }
+
+        resumenBoletos.textContent = cantidad;
 
 
-        nombreEspectaculo.textContent =
-            datos[0].trim();
+        // TOTAL
+        let precio = 0;
 
-        fechaFuncion.textContent =
-            datos[1] ? datos[1].trim() : "-";
+        if (espectaculo.value) {
 
-        horaFuncion.textContent =
-            datos[2] ? datos[2].trim() : "-";
+            const opcion =
+                espectaculo.options[espectaculo.selectedIndex];
 
-        precioBoleto.textContent =
-            precio.toFixed(2);
-
-        cantidadMostrada.textContent =
-            boletos;
+            precio =
+                parseFloat(opcion.dataset.precio) || 0;
+        }
 
         total.textContent =
-            (precio * boletos).toFixed(2);
-
-
-        informacion.style.display = "block";
-
+            (precio * cantidad).toFixed(2);
     }
 
 
-    if (funcion) {
+    fecha.addEventListener("change", function() {
 
-        funcion.addEventListener(
-            "change",
-            actualizarResumen
-        );
+        if (!fecha.value) {
+            mensajeFecha.style.display = "none";
+            actualizarResumen();
+            return;
+        }
 
-    }
+        const fechaSeleccionada =
+            new Date(fecha.value + "T00:00:00");
+
+        const diaSemana =
+            fechaSeleccionada.getDay();
+
+        // 0 = domingo
+        // 6 = sábado
+
+        if (diaSemana !== 0 && diaSemana !== 6) {
+
+            mensajeFecha.textContent =
+                "⚠️ Solo puedes reservar para sábados y domingos.";
+
+            mensajeFecha.style.display = "block";
+
+        } else {
+
+            mensajeFecha.style.display = "none";
+        }
+
+        actualizarResumen();
+
+    });
 
 
-    if (cantidad) {
+    espectaculo.addEventListener(
+        "change",
+        actualizarResumen
+    );
 
-        cantidad.addEventListener(
-            "input",
-            actualizarResumen
-        );
+    hora.addEventListener(
+        "change",
+        actualizarResumen
+    );
 
-    }
+    boletos.addEventListener(
+        "input",
+        actualizarResumen
+    );
+
+
+    formulario.addEventListener("submit", function(event) {
+
+        if (!fecha.value) {
+
+            event.preventDefault();
+
+            alert("Selecciona una fecha.");
+
+            return;
+        }
+
+
+        const fechaSeleccionada =
+            new Date(fecha.value + "T00:00:00");
+
+        const diaSemana =
+            fechaSeleccionada.getDay();
+
+
+        if (diaSemana !== 0 && diaSemana !== 6) {
+
+            event.preventDefault();
+
+            alert(
+                "Solo puedes reservar funciones para sábados y domingos."
+            );
+
+            return;
+        }
+
+
+        if (!espectaculo.value) {
+
+            event.preventDefault();
+
+            alert("Selecciona un espectáculo.");
+
+            return;
+        }
+
+
+        if (!hora.value) {
+
+            event.preventDefault();
+
+            alert("Selecciona una hora.");
+
+            return;
+        }
+
+
+        if (!boletos.value || boletos.value < 1) {
+
+            event.preventDefault();
+
+            alert("Selecciona la cantidad de boletos.");
+
+            return;
+        }
+
+    });
+
+
+    actualizarResumen();
 
 </script>
 
-
 </body>
-
 </html>
+
