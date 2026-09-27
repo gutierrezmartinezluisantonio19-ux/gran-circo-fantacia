@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 from datetime import date
+import os
 
 app = Flask(__name__)
 
@@ -20,13 +21,235 @@ CONTRASENA_ADMIN = "luis192009"
 # BASE DE DATOS
 # ==============================
 
+RUTA_BD = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "gran_circo_fantacia.db"
+)
+
+
 def conectar_bd():
 
-    conexion = sqlite3.connect("gran_circo_fantacia.db")
+    conexion = sqlite3.connect(RUTA_BD)
 
     conexion.execute("PRAGMA foreign_keys = ON")
 
     return conexion
+
+
+def inicializar_bd():
+
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+
+
+    # ==========================
+    # TABLA CLIENTES
+    # ==========================
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS clientes (
+            id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            apellido TEXT NOT NULL,
+            telefono TEXT NOT NULL,
+            correo TEXT NOT NULL UNIQUE
+        )
+    """)
+
+
+    # ==========================
+    # TABLA ESPECTÁCULOS
+    # ==========================
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS espectaculos (
+            id_espectaculo INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            descripcion TEXT NOT NULL,
+            duracion INTEGER NOT NULL,
+            precio REAL NOT NULL
+        )
+    """)
+
+
+    # ==========================
+    # TABLA FUNCIONES
+    # ==========================
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS funciones (
+            id_funcion INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_espectaculo INTEGER NOT NULL,
+            fecha TEXT NOT NULL,
+            hora TEXT NOT NULL,
+            FOREIGN KEY (id_espectaculo)
+            REFERENCES espectaculos(id_espectaculo)
+        )
+    """)
+
+
+    # ==========================
+    # TABLA RESERVACIONES
+    # ==========================
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS reservaciones (
+            id_reservacion INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_cliente INTEGER NOT NULL,
+            id_funcion INTEGER NOT NULL,
+            cantidad_boletos INTEGER NOT NULL,
+            fecha_reservacion TEXT NOT NULL,
+            FOREIGN KEY (id_cliente)
+            REFERENCES clientes(id_cliente),
+            FOREIGN KEY (id_funcion)
+            REFERENCES funciones(id_funcion)
+        )
+    """)
+
+
+    # ==========================
+    # ESPECTÁCULOS INICIALES
+    # ==========================
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO espectaculos
+        (
+            id_espectaculo,
+            nombre,
+            descripcion,
+            duracion,
+            precio
+        )
+        VALUES
+        (
+            1,
+            'Gran Espectáculo',
+            'Un espectáculo lleno de magia y diversión.',
+            90,
+            150
+        )
+    """)
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO espectaculos
+        (
+            id_espectaculo,
+            nombre,
+            descripcion,
+            duracion,
+            precio
+        )
+        VALUES
+        (
+            2,
+            'Exhibición de Animales',
+            'Conoce a los animales del Gran Circo Fantacia.',
+            60,
+            100
+        )
+    """)
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO espectaculos
+        (
+            id_espectaculo,
+            nombre,
+            descripcion,
+            duracion,
+            precio
+        )
+        VALUES
+        (
+            3,
+            'Los Payasos',
+            'Un show lleno de risas y diversión.',
+            45,
+            80
+        )
+    """)
+
+
+    # ==========================
+    # FUNCIONES INICIALES
+    # ==========================
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO funciones
+        (
+            id_funcion,
+            id_espectaculo,
+            fecha,
+            hora
+        )
+        VALUES
+        (
+            1,
+            1,
+            '2026-10-03',
+            '18:00'
+        )
+    """)
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO funciones
+        (
+            id_funcion,
+            id_espectaculo,
+            fecha,
+            hora
+        )
+        VALUES
+        (
+            2,
+            1,
+            '2026-10-03',
+            '21:00'
+        )
+    """)
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO funciones
+        (
+            id_funcion,
+            id_espectaculo,
+            fecha,
+            hora
+        )
+        VALUES
+        (
+            3,
+            2,
+            '2026-10-04',
+            '17:00'
+        )
+    """)
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO funciones
+        (
+            id_funcion,
+            id_espectaculo,
+            fecha,
+            hora
+        )
+        VALUES
+        (
+            4,
+            3,
+            '2026-10-04',
+            '19:00'
+        )
+    """)
+
+
+    conexion.commit()
+
+    conexion.close()
+
+
+# Crear la base de datos automáticamente
+# cuando inicia la aplicación
+inicializar_bd()
 
 
 # ==============================
@@ -124,9 +347,11 @@ def reservaciones():
         id_funcion = request.form["id_funcion"]
 
         try:
+
             cantidad_boletos = int(
                 request.form["cantidad_boletos"]
             )
+
         except ValueError:
 
             conexion.close()
@@ -135,8 +360,6 @@ def reservaciones():
                 url_for("reservaciones")
             )
 
-
-        # Validar cantidad de boletos
 
         if cantidad_boletos < 1 or cantidad_boletos > 10:
 
@@ -147,7 +370,9 @@ def reservaciones():
             )
 
 
-        # Verificar que la función exista
+        # ==========================
+        # VERIFICAR FUNCIÓN
+        # ==========================
 
         cursor.execute("""
             SELECT id_funcion
@@ -173,16 +398,13 @@ def reservaciones():
         # BUSCAR CLIENTE
         # ==========================
 
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT id_cliente
             FROM clientes
             WHERE correo = ?
-            """,
-            (
-                correo,
-            )
-        )
+        """, (
+            correo,
+        ))
 
         cliente = cursor.fetchone()
 
@@ -219,8 +441,6 @@ def reservaciones():
         else:
 
             id_cliente = cliente[0]
-
-            # Actualizar datos del cliente
 
             cursor.execute("""
                 UPDATE clientes
@@ -285,7 +505,14 @@ def reservaciones():
                 REPLACE(
                     REPLACE(
                         REPLACE(
-                            TRIM(CAST(COALESCE(espectaculos.precio, 0) AS TEXT)),
+                            TRIM(
+                                CAST(
+                                    COALESCE(
+                                        espectaculos.precio,
+                                        0
+                                    ) AS TEXT
+                                )
+                            ),
                             '$',
                             ''
                         ),
@@ -499,15 +726,12 @@ def eliminar_reservacion(id_reservacion):
     cursor = conexion.cursor()
 
 
-    cursor.execute(
-        """
+    cursor.execute("""
         DELETE FROM reservaciones
         WHERE id_reservacion = ?
-        """,
-        (
-            id_reservacion,
-        )
-    )
+    """, (
+        id_reservacion,
+    ))
 
 
     conexion.commit()
@@ -668,9 +892,7 @@ def eliminar_espectaculo(id_espectaculo):
 
     cursor.execute("""
         SELECT COUNT(*)
-
         FROM funciones
-
         WHERE id_espectaculo = ?
     """, (
         id_espectaculo,
@@ -698,7 +920,6 @@ def eliminar_espectaculo(id_espectaculo):
 
     cursor.execute("""
         DELETE FROM espectaculos
-
         WHERE id_espectaculo = ?
     """, (
         id_espectaculo,
@@ -865,9 +1086,7 @@ def eliminar_funcion(id_funcion):
 
     cursor.execute("""
         SELECT COUNT(*)
-
         FROM reservaciones
-
         WHERE id_funcion = ?
     """, (
         id_funcion,
@@ -895,7 +1114,6 @@ def eliminar_funcion(id_funcion):
 
     cursor.execute("""
         DELETE FROM funciones
-
         WHERE id_funcion = ?
     """, (
         id_funcion,
